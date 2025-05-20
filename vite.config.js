@@ -1,7 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
+import reext from './node_modules/@sencha/reext/dist/ReExt/vite-plugin-reext.js'
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(), 
+    reext()
+  ]
 })
