@@ -10,7 +10,36 @@
 }
 
 #root {
-  background-color: #fff;
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  background-color: var(--base-foreground-color, #fff);
+}
+
+.main-layout {
+  height: calc(100vh);
+  max-height: 100vh;
+  position: relative;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 16px;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+.main-layout-content {
+  flex: 1;
+  padding: 24px;
+  box-sizing: border-box;
+  border-radius: 16px 0 0 16px;
+}
+
+.main-layout-navbar {
+  margin: 24px 0;
+  padding: 24px 12px;
+  background-color: #f4f5f9;
+  border-radius: 0 16px 16px 0;
+}
+
+.main-layout-navbar .ui-divider {
+  border-style: solid;
+  border-color: var(--base-light-color, #a3a3a3);
 }

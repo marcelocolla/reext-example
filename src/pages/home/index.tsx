@@ -1,49 +1,37 @@
 import React, { useState } from "react";
 import ReExt, {
-  ReExtButton,
   ReExtGrid,
   ReExtPanel,
   ReExtContainer,
+  ReExtDateField,
+  ReExtCycleButton,
+  ReExtFroalaEditorField,
 } from "@sencha/reext";
+
+import { users } from "../../constants/users";
 
 export const HomePage = () => {
   const [row, setRow] = useState(null);
-  const [data] = useState([
-    {
-      name: "Jean Luc",
-      email: "jeanluc@enterprise.com",
-      phone: "555-111-1111",
-    },
-    {
-      name: "Worf",
-      email: "worf@enterprise.com",
-      phone: "555-222-2222",
-    },
-    {
-      name: "Deanna",
-      email: "deanna@enterprise.com",
-      phone: "555-333-3333",
-    },
-    {
-      name: "Data",
-      email: "data@enterprise.com",
-      phone: "555-444-4444",
-    },
-  ]);
+  const [data, setData] = useState(users);
+
+  const handleSave = (addUserInfo) => {
+    console.log("data", addUserInfo);
+
+    setData((prevData) => [...prevData, addUserInfo]);
+  };
 
   return (
-    <ReExtPanel config={{ layout: "border" }} style={{ height: "100vh" }}>
+    <div>
       <ReExtContainer
-        childRegion="center"
-        config={{
-          layout: "fit",
+        style={{
+          height: "320px",
         }}
       >
         <ReExtGrid
           columns={[
-            { text: "Name", dataIndex: "name", width: 60 },
+            { text: "Name", dataIndex: "name", width: 120 },
             { text: "Email", dataIndex: "email", flex: 1 },
-            { text: "Phone", dataIndex: "phone", width: 80 },
+            { text: "Phone", dataIndex: "phone", width: 120 },
           ]}
           store={{ data: data }}
           onSelect={(grid, selected) => {
@@ -57,31 +45,117 @@ export const HomePage = () => {
       </ReExtContainer>
 
       {row ? (
-        <ReExtContainer childRegion="east" childWidth={200}>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-start",
+        <div
+          style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            marginTop: "24px",
+            gap: "8px",
+          }}
+        >
+          <ReExt xtype="label" config={{ html: `name: ${row?.name}` }} />
+          <ReExt xtype="label" config={{ html: `email: ${row?.email}` }} />
+          <ReExt xtype="label" config={{ html: `phone: ${row?.phone}` }} />
+
+          <ReExt
+            xtype="textfield"
+            config={{
+              label: "First Name",
+              placeholder: "enter first name",
+              value: row?.name,
             }}
-          >
-            <ReExt
-              xtype="displayfield"
-              config={{ value: `name: ${row === null ? "" : row.name}` }}
-            />
-            <ReExt
-              xtype="displayfield"
-              config={{ value: `email: ${row === null ? "" : row.email}` }}
-            />
-            <ReExt
-              xtype="displayfield"
-              config={{ value: `phone: ${row === null ? "" : row.phone}` }}
-            />
-          </div>
-        </ReExtContainer>
+          />
+          <ReExt
+            xtype="textareafield"
+            config={{
+              label: "First Name",
+              placeholder: "enter first name",
+              value: row?.email,
+            }}
+          />
+          <ReExtDateField config={{ value: new Date() }} />
+          <ReExtCycleButton
+            showText={true}
+            prependText="View as "
+            menu={{
+              items: [
+                { text: "Text only", iconCls: "view-text", checked: true },
+                { text: "HTML", iconCls: "view-html", checked: false },
+                { text: "PDF", iconCls: "view-pdf", checked: false },
+              ],
+            }}
+            changeHandler={function (cycleBtn, activeItem) {
+              console.log("activeItem.text", activeItem.text);
+            }}
+          />
+          <ReExtFroalaEditorField
+            style={{ overflow: "scroll" }}
+            config={{ text: "Reason" }}
+          />
+        </div>
       ) : (
         <div />
       )}
-    </ReExtPanel>
+
+      <ReExt
+        xtype="panel"
+        style={{ height: 240, marginTop: "24px" }}
+        config={{
+          title: "Add a new row",
+          layout: "vbox",
+          bodyPadding: 16,
+          items: [
+            {
+              xtype: "container",
+              flex: 1,
+              items: [
+                {
+                  xtype: "textfield",
+                  reference: "name",
+                  placeholder: "enter name",
+                  label: "Name",
+                },
+                {
+                  xtype: "textfield",
+                  reference: "email",
+                  placeholder: "enter email",
+                  label: "Email",
+                },
+                {
+                  xtype: "textfield",
+                  reference: "phone",
+                  placeholder: "enter phone",
+                  label: "Phone",
+                },
+              ],
+            },
+            {
+              xtype: "container",
+              items: [
+                {
+                  xtype: "button",
+                  text: "Clear",
+                  style: { marginRight: "16px" },
+                },
+                {
+                  xtype: "button",
+                  text: "Save",
+                  minWidth: 98,
+                  handler: () => {
+                    handleSave({
+                      name: `John Doe ${data.length + 1}`,
+                      email: "john.doe@example.com",
+                      phone: new Date().getTime().toString(),
+                    });
+                  },
+                },
+              ],
+            },
+          ],
+        }}
+      />
+    </div>
   );
 };

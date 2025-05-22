@@ -8,7 +8,7 @@ import { ReExtProvider } from "@sencha/reext";
 const ReExtData = {
   sdkversion: "7.9.0",
   toolkit: "classic",
-  theme: "material",
+  theme: "triton",
   rtl: false,
   locale: "en",
   debug: false,
